@@ -205,5 +205,5 @@ This is the initial version.
     * Built and run ok using Embarcadero RAD STudio Seattle (See provided project file)
 
 ##License
-Feel free to join or fork this project under the general GNU open source license (See project license file)
+Feel free to join or clone this project under the general GNU open source license (See project license file)
 
