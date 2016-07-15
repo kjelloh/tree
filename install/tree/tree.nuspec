@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- Read this before publishing packages to chocolatey.org: https://github.com/chocolatey/chocolatey/wiki/CreatePackages -->
+    <id>tree</id>
+    <title>tree (Install)</title>
+    <version>0.1</version>
+    <authors>Kjell-Olov Högdahl</authors>
+    <owners>Kjell-Olov Högdahl</owners>
+    <summary>Tree command line tool</summary>
+    <description>A cross platform tree recursive directory listing program inspired by the Debian distribution tree command. Written in modern C++11 and Boost.
+    </description>
+    <projectUrl>https://github.com/kjelloh/tree</projectUrl>
+    <packageSourceUrl>https://github.com/kjelloh/tree/tree/master/build</packageSourceUrl>
+    <!--<projectSourceUrl></projectSourceUrl>
+    <docsUrl></docsUrl>
+    <mailingListUrl></mailingListUrl>
+    <bugTrackerUrl></bugTrackerUrl>-->
+    <tags>tree admin SPACE_SEPARATED</tags>
+    <copyright></copyright>
+    <licenseUrl>https://github.com/kjelloh/tree/blob/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--<iconUrl>http://cdn.rawgit.com/__REPLACE_YOUR_REPO__/master/icons/tree.png</iconUrl>-->
+    <!--<dependencies>
+      <dependency id="" version="__VERSION__" />
+      <dependency id="" />
+    </dependencies>-->
+    <releaseNotes>Initial release</releaseNotes>
+    <!--<provides></provides>-->
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

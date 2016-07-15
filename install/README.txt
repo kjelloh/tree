@@ -1,0 +1,1 @@
+Chocolatey (https://chocolatey.org/) is a package manager for Windows based on extended NuGet packages.
