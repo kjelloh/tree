@@ -32,7 +32,6 @@ namespace local { namespace detail {
 			 std::begin(base),std::end(base)
 			,std::begin(p));
 		std::for_each(iter_pair.second,std::end(p),[&result](const path& p) {result /= p;});
-// std::cout << "missmatch of " << p << " and " << base << " returns " << result << "\n";
 		return result;
 	}
 }}
@@ -50,62 +49,38 @@ void recursive_dir(Paths& result, const Path& p,const Path& root_path) {
 		});
 }
 
+namespace detail {
+	template <typename Tag>
+	struct is_forward_iterator_tag : public std::false_type {};
+	template <>
+	struct is_forward_iterator_tag<std::forward_iterator_tag> : public std::true_type {};
+}
+
 using Fml_Iterator = Path::iterator;
 using Fml_Functor = std::function<void (Fml_Iterator::value_type)>;
 void for_first_middle_last(Fml_Iterator _first, Fml_Iterator _end,Fml_Functor first,Fml_Functor middle,Fml_Functor last) {
-	// (1) [_first,_end[ = {}
-	//                      iter_pair {_end,_end}
-	//						apply none
-	// (2) [_first,_end[ = {<1>}
-	//                      iter_pair {<1>,end}
-	//						apply last(<1>)
-	// (3) [_first,_end] = {<1>,<2>}
-	//                      iter_pair {<1>,<2>},{<2>,end}
-	//						apply first(<1>),last(<2>)
-	// (4) [_first,_end] = {<1>,<2>,...<n>}
-	//                      iter_pair {<1>,<2>},{<2>,<3>}...{<n>,end}
-	//						apply first(<1>),middle(<2>)...middle(<n-1>), last(<n>)
-
-	auto iter_pair = std::make_pair(_first,_first);
-	if (iter_pair.first == _end) {
-		// (1) [_first,_end[ = {}
-		//                      iter_pair {_end,_end}
-		//						apply none
-	}
-	else {
-		++iter_pair.second; // pair = first and second in range
-		if (iter_pair.second == _end) {
-			// (2) [_first,_end[ = {<1>}
-			//                      iter_pair {<1>,end}
-			//						apply last(<1>)
-			last(*iter_pair.first);
+	// Always apply last to last element if at least one entry in the proved range.
+	// Apply first and last if two elemnts in provded range.
+	// Otherwise apply first to the first element, middle to intermediate elements and last to last element.
+	static_assert(!detail::is_forward_iterator_tag<Fml_Iterator::iterator_category>::value,"for_first_middle_last must be called with Forward Iteratable range");
+	switch (std::distance(_first, _end)) {
+	case 0: break;
+	case 1: {last(*_first); } break;
+	case 2: {first(*_first); last(*(++_first)); } break;
+	default: {
+		auto iter_pair = std::make_pair(_first, ++Fml_Iterator(_first));
+		first(*iter_pair.first);
+		++iter_pair.first; ++iter_pair.second;
+		while (iter_pair.second != _end) {
+			middle(*iter_pair.first); // apply middle
+			++iter_pair.first; ++iter_pair.second;
 		}
-		else {
-			Fml_Iterator second_next = iter_pair.second; ++second_next;
-			if (second_next == _end) {
-				// (3) [_first,_end[ = {<1>,<2>}
-				//                      iter_pair {<1>,<2>},{<2>,end}
-				//						apply first(<1>),last(<2>)
-				first(*iter_pair.first);
-				last(*iter_pair.second);
-			}
-			else {
-				// (4) [_first,_end] = {<1>,<2>,...<n>}
-				//                      iter_pair {<1>,<2>},{<2>,<3>}...{<n>,end}
-				//						apply first(<1>),middle(<2>)...middle(<n-1>), last(<n>)
-				first(*iter_pair.first);
-				++iter_pair.first; ++iter_pair.second;
-				while (iter_pair.second != _end) {
-					middle(*iter_pair.first); // apply middle
-					++iter_pair.first; ++iter_pair.second;
-				}
-				last(*iter_pair.first); // apply last
-			}
-		}
+		last(*iter_pair.first);
+	} break;
 	}
 }
 
-auto print_tree_entry = [](Path p) {
+auto print_tree_entry = [](const Path& p) {
 // TEST
 //std::cout << p << "\n";
 	for_first_middle_last(std::begin(p),std::end(p)
@@ -117,11 +92,6 @@ auto print_tree_entry = [](Path p) {
 
  int _tmain(int argc, _TCHAR* argv[])
 {
-
-// TEST
-// Path root_path = R"(C:\Users\kjell-olovhogdahl\Documents\cpp\MyNakedCMakeConsoleApp)";
-// Path root_path = R"(C:\Users\kjell-olovhogdahl\Documents\Embarcadero\Studio\Projects\tree)"; // This project on my windows 10 development machine
-
 	Path root_path = filesystem::current_path();
 	Paths v;
 	recursive_dir(v,root_path,root_path);
