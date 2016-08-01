@@ -199,10 +199,10 @@ C:\Users\kjell-olovhogdahl\Documents\GitHub\tree\build>
 #Version 0.1 Notes
 This is the initial version. 
 
-    * No parameters supported.
-    * Only tested on Windows 10.
-    * Built and run ok using Visual Studio 2015
-    * Built and run ok using Embarcadero RAD STudio Seattle (See provided project file)
+* No parameters supported.
+* Only tested on Windows 10.
+* Built and run ok using Visual Studio 2015
+* Built and run ok using Embarcadero RAD STudio Seattle (See provided project file)
 
 ##License
 Feel free to join or clone this project under the general GNU open source license (See project license file)

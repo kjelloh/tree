@@ -18,6 +18,7 @@ typedef char _TCHAR;
 #include <sstream>
 #include <boost/filesystem.hpp>
 #include <algorithm>
+#include "Sisyphus.h"
 
 namespace filesystem = boost::filesystem; // Enable change of applied filesystem by later changing alias (e.g., to C++17 std::filesystem)
 using Path = filesystem::path;
@@ -92,6 +93,9 @@ auto print_tree_entry = [](const Path& p) {
 
  int _tmain(int argc, _TCHAR* argv[])
 {
+	{
+		//sisyphus::make_the_unit_link();
+	}
 	Path root_path = filesystem::current_path();
 	Paths v;
 	recursive_dir(v,root_path,root_path);

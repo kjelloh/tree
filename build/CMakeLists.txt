@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 project (tree)
-add_executable(tree main.cpp)
+add_executable(tree main.cpp Sisyphus.cpp Sisyphus.h)
 
 # Locate Boost libraries
 set(Boost_USE_STATIC_LIBS ON)
